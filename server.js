@@ -1,12 +1,18 @@
-const express = require("express");
-const connectDB = require("./config/dbConnection");
+const express = require('express');
+const connectDB = require('./config/dbConnection');
 
 const app = express();
 
 //database connection
 connectDB();
 
-app.get("/", (req, res) => res.send("server is working"));
+app.get('/', (req, res) => res.send('server is working'));
+
+//defined routes
+app.use('/api/users', require('./routes/api/users'));
+app.use('/api/auth', require('./routes/api/auth'));
+app.use('/api/posts', require('./routes/api/posts'));
+app.use('/api/profile', require('./routes/api/profile'));
 
 const PORT = process.env.PORT || 5000;
 

@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
-const config = require("config");
-const db = config.get("mongoURI");
+const mongoose = require('mongoose');
+const config = require('config');
+const db = config.get('mongoURI');
 
 const connectDB = async () => {
   try {
@@ -8,7 +8,7 @@ const connectDB = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log("mongoDB is connected sucka!!.........");
+    console.log('mongoDB is connected sucka!!.........');
   } catch (error) {
     console.log(error.message);
     //exits function if there is an error
