@@ -1,6 +1,10 @@
 const express = require("express");
+const connectDB = require("./config/dbConnection");
 
 const app = express();
+
+//database connection
+connectDB();
 
 app.get("/", (req, res) => res.send("server is working"));
 
