@@ -39,30 +39,29 @@ router.post(
       let user = await User.findOne({ email: email });
       if (user) {
         res.status(400).json({ errors: [{ msg: 'user already exists' }] });
+      } else {
+        //grabs gravatar if one is available
+        const avatar = normalize(
+          gravatar.url(email, { s: '200', r: 'pg', d: 'mm' }),
+          { forceHttps: true }
+        );
+
+        // creating new user object to save to db
+        user = new User({
+          name,
+          email,
+          avatar,
+          password,
+        });
+
+        //creating salt round and then hashing/encrypting password
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(password, salt);
+
+        //saving user object with hashed password to db
+        await user.save();
+        res.send(`User, ${name} is now registered`);
       }
-
-      //grabs gravatar if one is available
-      const avatar = normalize(
-        gravatar.url(email, { s: '200', r: 'pg', d: 'mm' }),
-        { forceHttps: true }
-      );
-
-      // creating new user object to save to db
-      user = new User({
-        name,
-        email,
-        avatar,
-        password,
-      });
-
-      //creating salt round and then hashing/encrypting password
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(password, salt);
-
-      //saving user object with hashed password to db
-      await user.save();
-      res.send(`User, ${name} is now registered`);
-
       //return json webToke
     } catch (error) {
       console.error(error);
